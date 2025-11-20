@@ -105,7 +105,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="border-t border-gray-200 py-8">
         <div className="max-w-7xl mx-auto px-4 text-center text-gray-600">
-          <p>&copy; 2024 Pipeline. All rights reserved.</p>
+          <p>&copy; 2025 Pipeline. All rights reserved.</p>
         </div>
       </footer>
     </div>
