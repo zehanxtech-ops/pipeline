@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server'
 
-const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL || 'http://localhost:8000'
+// Use NEXT_PUBLIC_PYTHON_SERVICE_URL for production (set in Vercel)
+// Fallback to PYTHON_SERVICE_URL for backward compatibility
+// Default to localhost for local development
+const PYTHON_SERVICE_URL = 
+  process.env.NEXT_PUBLIC_PYTHON_SERVICE_URL || 
+  process.env.PYTHON_SERVICE_URL || 
+  'http://localhost:8000'
 
 export async function POST(request: Request) {
   try {

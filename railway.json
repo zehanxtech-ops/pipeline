@@ -1,0 +1,26 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "dockerfile",
+    "context": "./python-service"
+  },
+  "deploy": {
+    "startCommand": "python main.py",
+    "restartPolicyMaxRetries": 5,
+    "restartPolicyWindowSeconds": 60
+  },
+  "variables": {
+    "PORT": {
+      "description": "Port for the FastAPI service",
+      "value": "8000"
+    },
+    "HF_TOKEN": {
+      "description": "HuggingFace API token for model deployment",
+      "value": ""
+    },
+    "GROQ_API_KEY": {
+      "description": "Groq API key for AI model analysis",
+      "value": ""
+    }
+  }
+}

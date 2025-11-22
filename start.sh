@@ -7,6 +7,10 @@ echo ""
 if [ "$1" == "--docker" ]; then
     echo "📦 Starting with Docker Compose..."
     docker-compose up
+elif [ "$1" == "--frontend-only" ]; then
+    echo "🌐 Starting Next.js App (Frontend Only)..."
+    echo "ℹ️  Make sure Python backend is running at: $PYTHON_SERVICE_URL"
+    npm run dev
 else
     echo "🐍 Starting Python Training Service..."
     cd python-service

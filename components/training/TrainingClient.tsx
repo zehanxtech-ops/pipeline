@@ -12,6 +12,7 @@ import DatasetAnalysis from './DatasetAnalysis'
 import EpochConfiguration from './EpochConfiguration'
 import TrainingProgress from './TrainingProgress'
 import DeploymentForm from './DeploymentForm'
+import ApiKeysModal, { ApiKeys } from './ApiKeysModal'
 
 interface TrainingClientProps {
   model: any
@@ -33,6 +34,8 @@ export default function TrainingClient({ model: initialModel, userId }: Training
   })
   const [trainingJob, setTrainingJob] = useState<any>(null)
   const [epochs, setEpochs] = useState<any[]>([])
+  const [showApiKeysModal, setShowApiKeysModal] = useState(false)
+  const [apiKeys, setApiKeys] = useState<ApiKeys | null>(null)
 
   useEffect(() => {
     if (stage === 'analyzing') {
@@ -84,7 +87,25 @@ export default function TrainingClient({ model: initialModel, userId }: Training
     setStage('configuring')
   }
 
-  const startTraining = async () => {
+  const handleStartTraining = () => {
+    setShowApiKeysModal(true)
+  }
+
+  const handleApiKeysSubmit = (keys: ApiKeys) => {
+    setApiKeys(keys)
+    setShowApiKeysModal(false)
+    startTraining(keys)
+  }
+
+  const handleApiKeysSkip = () => {
+    setApiKeys({
+      compute_type: 'cpu',
+    })
+    setShowApiKeysModal(false)
+    startTraining({ compute_type: 'cpu' })
+  }
+
+  const startTraining = async (keys: ApiKeys) => {
     setStage('training')
 
     try {
@@ -235,6 +256,13 @@ export default function TrainingClient({ model: initialModel, userId }: Training
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {showApiKeysModal && (
+        <ApiKeysModal
+          onSubmit={handleApiKeysSubmit}
+          onSkip={handleApiKeysSkip}
+        />
+      )}
+
       <div className="max-w-7xl mx-auto p-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{model.name}</h1>
@@ -258,7 +286,7 @@ export default function TrainingClient({ model: initialModel, userId }: Training
               <EpochConfiguration
                 config={trainingConfig}
                 onChange={setTrainingConfig}
-                onStart={startTraining}
+                onStart={handleStartTraining}
               />
             </>
           )}
